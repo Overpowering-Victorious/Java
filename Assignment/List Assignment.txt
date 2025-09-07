@@ -1,0 +1,207 @@
+package day4;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+public class ListDemo {
+
+	public static void main(String[] args) {
+		List<Integer> L=new ArrayList<>(),M=new ArrayList<>();
+		L.add(1);
+		L.add(9);
+		L.add(3);
+		L.add(7);
+		L.add(8);
+		L.add(6);
+		L.add(4);
+		L.add(5);
+		L.add(2);
+		L.add(10);
+		M.add(11);
+		M.add(12);
+		M.add(13);
+		M.add(14);
+		M.add(15);
+		display_list(L); //Q1
+		System.out.println();
+		remove_even(L); //Q2
+		System.out.println();
+		System.out.println("[Min, Max] elements in the list: "+Arrays.toString(min_max_elements(L))); // Q3
+		System.out.println();
+		sorted_list(L); // Q4
+		System.out.println();
+		reverse_list(L); //Q5
+		System.out.println();
+		System.out.println(check_existence()); // Q6
+		System.out.println();
+		
+		List<String> names=new ArrayList<>();
+		names.add("Dougles");
+		names.add("Champa");
+		names.add("Eren");
+		names.add("Alice");
+		names.add("Bob");
+		names.add("Alice");
+		names.add("Champa");
+		names.add("Champa");
+		
+		find_duplicates(names); //Q7
+		System.out.println();
+		array_to_list(); // Q8
+		System.out.println();
+		merge_lists(L,M); // Q9
+		System.out.println();
+		
+		List<Student>st=new ArrayList<>();
+		st.add(new Student(4,"Dougles"));
+		st.add(new Student(3,"Champa"));
+		st.add(new Student(5,"Eren"));
+		st.add(new Student(1,"Alice"));
+		st.add(new Student(2,"Bob"));
+		sort_students(st); //Q10
+	}
+
+	static void display_list(List<Integer> l)
+	{
+		for(int i=0; i<l.size(); i++)
+		{
+			System.out.print(l.get(i)+" ");
+		}
+		System.out.println();
+	}
+	
+	static void remove_even(List<Integer> l)
+	{
+		int n=l.size();
+		List<Integer>tmp=new ArrayList<>();
+		for(int i=0; i<n; i++)
+		{
+			int x=l.get(i);
+			if(x%2==1)
+				tmp.add(x);
+		}
+		display_list(tmp);
+	}
+	
+	static int[] min_max_elements(List<Integer> l)
+	{
+		int n=l.size();
+		int ans[]=new int[] {(int)1e9,(int)-1e9};
+		for(int i=0; i<n; i++)
+		{
+			int x=l.get(i);
+			if(ans[0]>x)
+				ans[0]=x;
+			if(ans[1]<x)
+				ans[1]=x;
+		}
+		return ans;
+	}
+	
+	
+	static void sorted_list(List<Integer> l)
+	{
+		Collections.sort(l);
+		display_list(l);
+		Collections.sort(l, (i,j) -> Integer.compare(j, i));
+		display_list(l);
+	}
+	
+	static void reverse_list(List<Integer> l)
+	{
+		int n=l.size();
+		for(int i=0; i<n/2; i++)
+		{
+			Integer x=l.get(i);
+			Integer y=l.get(n-i-1);
+			l.set(i, y);
+			l.set(n-i-1, x);
+		}
+		display_list(l);
+		l=l.reversed();
+		display_list(l);
+	}
+	
+	static boolean check_existence()
+	{
+		List<String>s=new ArrayList<>();
+		String tmp1="abc";
+		s.add("pwr");
+		s.add("iuv");
+		s.add("jki");
+		s.add("abc");
+		s.add("des");
+		s.add("kar");
+		for(int i=0; i<s.size(); i++)
+		{
+			String tmp2=s.get(i);
+			if(tmp1==tmp2)
+				return true;
+		}
+		return false;
+	}
+	
+	static void find_duplicates(List<String>l)
+	{
+		int n=l.size();
+		boolean vis[]=new boolean[n];
+		for(int i=0; i<n; i++)
+		{
+			if(vis[i])
+				continue;
+			boolean p=false;
+			for(int j=i+1; j<n; j++)
+			{
+				if(l.get(j)==l.get(i))
+				{
+					p=true;
+					vis[j]=true;
+				}
+			}
+			if(p && !vis[i])
+				System.out.print(l.get(i)+" ");
+		}
+		System.out.println();
+	}
+	
+	static void array_to_list()
+	{
+		int a[]=new int[] {1,2,3,4,5};
+		String b[]=new String[] {"6","7","8"};
+		List<Integer> c=new ArrayList<>();
+		for(int i=0; i<a.length; i++)
+		{
+			c.add(a[i]);
+		}
+		for(int i=0; i<b.length; i++)
+		{
+			c.add(Integer.parseInt(b[i]));
+		}
+		display_list(c);
+	}
+	
+	static void merge_lists(List<Integer>l, List<Integer>m)
+	{
+		for(int i=0; i<m.size(); i++)
+		{
+			l.add(m.get(i));
+		}
+		m.clear();
+		display_list(l);
+//		display_list(m);
+	}
+	
+	static void sort_students(List<Student>s)
+	{
+		Collections.sort(s, (s1,s2) -> s1.name.compareTo(s2.name));
+		for(int i=0; i<s.size(); i++)
+		{
+			Student tmp=s.get(i);
+			System.out.print(tmp.id+" "+tmp.name+"  ");
+		}
+		System.out.println();
+	}
+
+}

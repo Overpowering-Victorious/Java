@@ -1,0 +1,249 @@
+package day4;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.Objects;
+import java.util.Scanner;
+
+class Student
+{
+	int id;
+	String name;
+	
+	Student(){}
+	
+	Student(int id, String name)
+	{
+		this.id=id;
+		this.name=name;
+	}
+	
+	@Override
+	public int hashCode()
+	{
+		return Objects.hash(id,name);
+	}
+	
+	@Override
+	public boolean equals(Object ob)
+	{
+		if(this==ob)
+			return true;
+		if(ob==null || ob.getClass()!=this.getClass())
+			return false;
+		Student st=(Student)ob;
+		return (this.id==st.id && this.name==st.name);
+	}
+	
+	@Override 
+	public String toString()
+	{
+		return "[Id = "+Integer.toString(id)+", Name = "+name+"]";
+	}
+}
+
+public class SetsDemo {
+	
+	static Scanner scanner=new Scanner(System.in);
+
+	public static void main(String[] args) {
+		Set<String>S=new HashSet<>();
+		S.add("Ram");
+		S.add("Ram");
+		S.add("Shyaam");
+		S.add("Babloo");
+		S.add("Golu");
+		S.add("Chintu");
+		S.add("Geeta");
+		S.add("Seeta");
+		S.add("Lakshman");
+		S.add("Bharat");
+		S.add("Shiv");
+		S.add("Vishnu");
+		S.add("Shiv");
+		
+		display_set(S); //Q11
+		System.out.println();
+		
+		List<String>L=new ArrayList<>();
+		L.add("Seeta");
+		L.add("Ram");
+		L.add("Ram");
+		L.add("Shyaam");
+		L.add("Shyaam");
+		L.add("Golu");
+		L.add("Golu");
+		L.add("Geeta");
+		L.add("Geeta");
+		L.add("Lakshman");
+		L.add("Lakshman");
+		L.add("Shiv");
+		L.add("Lakshman");
+		L.add("Shiv");
+		
+		Set<String> s=remove_duplicates(L); //Q12
+		System.out.println();
+		System.out.println(check_equality(S,s)); //Q13
+		System.out.println();
+		System.out.println(find_intersection(S,s)); //Q14
+		System.out.println();
+		System.out.println(find_union(S,s)); //Q15
+		System.out.println(find_diff(S,s)); //Q15
+		System.out.println();
+		
+		Set<Student> st=new HashSet<>();
+		Student s1=new Student(4,"Dougles");
+		Student s2=new Student(3,"Champa");
+		Student s3=new Student(5,"Eren");
+		Student s4=new Student(1,"Alice");
+		Student s5=new Student(2,"Bob");
+		Student s6=new Student(4,"Dougles");
+		st.add(s1);
+		st.add(s2);
+		st.add(s3);
+		st.add(s4);
+		st.add(s5);
+		st.add(s6);
+		System.out.println(st.toString()); //Q16
+		System.out.println();
+		
+		System.out.println(S.containsAll(s)); //Q17
+		System.out.println(does_first_contain_second(S,s));
+		System.out.println();
+		
+		List<String> l1=List.copyOf(S);
+		List<String> l2=new ArrayList<>();
+		l2.addAll(S);
+		System.out.println(l1.toString());
+		System.out.println(l2.toString()); //Q18
+		System.out.println();
+		
+		custom_input_removal(); //Q19
+		System.out.println();
+		
+		find_duplicate_count(L); //Q20
+		
+	}
+	
+	static void display_set(Set<String> s)
+	{
+		for(String e: s)
+		{
+			System.out.print(e+" ");
+		}
+		System.out.println();
+	}
+	
+	static Set<String> remove_duplicates(List<String>l)
+	{
+		Set<String> tmp=new HashSet<>();
+		for(int i=0; i<l.size(); i++)
+		{
+			tmp.add(l.get(i));
+		}
+		display_set(tmp);
+		return tmp;
+	}
+	
+	static boolean check_equality(Set<String>s1, Set<String>s2)
+	{
+		if(s1.size()!=s2.size())
+			return false;
+		for(String e: s1)
+		{
+			if(!s2.contains(e))
+				return false;
+		}
+		return true;
+	}
+	
+	static Set<String> find_intersection(Set<String>s1, Set<String>s2)
+	{
+		Set<String>tmp=new HashSet<>();
+		for(String e: s1)
+		{
+			if(s2.contains(e))
+				tmp.add(e);
+		}
+		return tmp;
+	}
+	
+	static Set<String> find_union(Set<String>s1, Set<String>s2)
+	{
+		Set<String>tmp=new HashSet<>();
+		for(String e: s1)
+		{
+			tmp.add(e);
+		}
+		for(String e: s2)
+		{
+			tmp.add(e);
+		}
+		return tmp;
+	}
+	
+	static Set<String> find_diff(Set<String>s1, Set<String>s2)
+	{
+		Set<String>tmp=new HashSet<>();
+		for(String e: s1)
+		{
+			if(!s2.contains(e))
+				tmp.add(e);
+		}
+		for(String e: s2)
+		{
+			if(!s1.contains(e))
+				tmp.add(e);
+		}
+		return tmp;
+	}
+	
+	static boolean does_first_contain_second(Set<String>s1, Set<String>s2)
+	{
+		for(String e: s2)
+		{
+			if(!s1.contains(e))
+				return false;
+		}
+		return true;
+	}
+	
+	static void custom_input_removal()
+	{
+		Set<Integer>tmp=new HashSet<>();
+		System.out.print("User input (Integer): ");
+		tmp.add(scanner.nextInt());
+		tmp.add(scanner.nextInt());
+		tmp.add(scanner.nextInt());
+		tmp.add(scanner.nextInt());
+		tmp.add(scanner.nextInt());
+		System.out.println(tmp.toString());
+		tmp.remove(5);
+		tmp.remove(2);
+		tmp.remove(6);
+		System.out.println(tmp.toString());
+	}
+	
+	static void find_duplicate_count(List<String>l)
+	{
+		Set<String>s=new HashSet<>();
+		for(String e: l)
+		{
+			s.add(e);
+		}
+		for(String e: s)
+		{
+			int c=0;
+			for(int i=0; i<l.size(); i++)
+			{
+				if(l.get(i)==e)
+					c++;
+			}
+			System.out.print(e+" - "+c+"  ");
+		}
+		System.out.println();
+	}
+
+}

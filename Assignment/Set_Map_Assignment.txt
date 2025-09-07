@@ -1,0 +1,244 @@
+package day5;
+
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.Scanner;
+import java.util.Set;
+import java.util.TreeMap;
+
+class cmp implements Comparator<String>
+{
+	Map<String,Integer>m;
+	cmp(Map<String,Integer>m)
+	{
+		this.m=m;
+	}
+	
+	public int compare(String a, String b)
+	{
+		if(m.get(a)<=m.get(b))
+			return -1;
+		else
+			return 1;
+	}
+}
+
+public class MapsDemo {
+	
+	static Scanner scanner=new Scanner(System.in);
+
+	public static void main(String[] args) {
+		Set<String> s1=new HashSet<>();
+		s1.add("Alice");
+		s1.add("Bob");
+		Set<String> s2=new HashSet<>();
+		s2.add("Jake");
+		s2.add("Jones");
+		System.out.println(find_union(s1,s2)); //Q1
+		System.out.println();
+		
+		basic_queue_operations(); //Q2
+		System.out.println();
+		
+		basic_deque_operations(); //Q3
+		System.out.println();
+		
+		System.out.print("Enter the String: ");
+		String s=scanner.nextLine();
+		System.out.println(find_word_frequency(s).toString()); //Q4
+		System.out.println();
+		
+		System.out.println(find_character_frequency(s).toString()); //Q5
+		System.out.println();
+		
+		Map<String,Integer>pb=phone_book(); //Q6
+		System.out.println(pb.toString());
+		System.out.println();
+		
+		System.out.println(sorted_map(pb)); //Q7;
+		System.out.println();
+		
+		Map<Integer,List<String>>sm=sorting_by_length(); //Q8
+		System.out.println(sm.toString());
+		System.out.println();
+		
+		Map<String,String>mp=new HashMap<>();
+		mp.put("Apple", "Fruit");
+		mp.put("Honda", "Car");
+		mp.put("OnePiece", "Anime");
+		System.out.println(mp.toString());
+		mp=reverse(mp);                        // Q9
+		System.out.println(mp.toString());
+		System.out.println();
+		
+		List<String>l=new ArrayList<>();
+		l.add("Car");
+		l.add("Jet");
+		l.add("Car");
+		l.add("Box");
+		l.add("Box");
+		l.add("Car");
+		System.out.println(find_word_frequency(l).toString()); //Q10
+		System.out.println();
+	}
+	
+	static Set<String> find_union(Set<String>s1, Set<String>s2)
+	{
+		Set<String>tmp=new HashSet<>();
+		for(String e: s1)
+		{
+			tmp.add(e);
+		}
+		for(String e: s2)
+		{
+			tmp.add(e);
+		}
+		return tmp;
+	}
+	
+	static void basic_queue_operations()
+	{
+		Queue<Integer> q=new PriorityQueue<>();
+		q.add(5);
+		System.out.print(q.toString()+"  ");
+		q.add(1);
+		System.out.print(q.toString()+"  ");
+		q.add(10);
+		System.out.print(q.toString()+"  ");
+		q.add(-10);
+		System.out.print(q.toString()+"  ");
+		System.out.println();
+	}
+	
+	static void basic_deque_operations()
+	{
+		Deque<Integer> dq=new ArrayDeque<>();
+		dq.addFirst(5);
+		System.out.print(dq.toString()+"  ");
+		dq.addLast(10);
+		System.out.print(dq.toString()+"  ");
+		dq.addFirst(7);
+		System.out.print(dq.toString()+"  ");
+		dq.addLast(-10);
+		System.out.print(dq.toString()+"  ");
+		dq.removeFirst();
+		System.out.print(dq.toString()+"  ");
+		dq.removeLast();
+		System.out.print(dq.toString()+"  ");
+		System.out.println();
+		
+	}
+	
+	static Map<String,Integer> find_word_frequency(String s)
+	{
+		Map<String,Integer>m=new HashMap<>();
+		String tmp="";
+		for(int i=0; i<s.length(); i++)
+		{
+			char c=s.charAt(i);
+			if(c==' ' || c=='.')
+			{
+				if(tmp.isEmpty()) continue;
+				m.put(tmp, (m.get(tmp)==null?0:m.get(tmp))+1);
+				tmp="";
+			}
+			else
+				tmp+=c;
+		}
+		if(!tmp.isEmpty())
+			m.put(tmp, (m.get(tmp)==null?0:m.get(tmp))+1);
+		return m;
+	}
+	
+	static Map<Character,Integer> find_character_frequency(String s)
+	{
+		Map<Character,Integer>m=new HashMap<>();
+		for(int i=0; i<s.length(); i++)
+		{
+			char c=s.charAt(i);
+			m.put(c, (m.get(c)==null?0:m.get(c))+1);
+		}
+		return m;
+	}
+	
+	static Map<String,Integer> phone_book()
+	{
+		Map<String,Integer>m=new HashMap<>();
+		System.out.print("Number of entries: ");
+		int n=scanner.nextInt();
+		while(n>0)
+		{
+			String s=scanner.next();
+			int num=scanner.nextInt();
+			m.put(s, num);
+			n--;
+		}
+		return m;
+	}
+	
+	
+	static Map<String,Integer> sorted_map(Map<String,Integer>m)
+	{
+		cmp mvc=new cmp(m);
+		Map<String,Integer>tmp=new TreeMap<>(mvc);
+		tmp.putAll(m);
+		return tmp;
+	}
+	
+	static Map<Integer,List<String>> sorting_by_length()
+	{
+		Map<Integer,List<String>>m=new TreeMap<>();
+		System.out.print("Number of entries: ");
+		int n=scanner.nextInt();
+		while(n>0)
+		{
+			String s=scanner.next();
+			int sz=s.length();
+			if(m.get(sz)==null)
+			{
+				List<String> l=new ArrayList<>();
+				l.add(s);
+				m.put(sz, l);
+			}
+			else
+				m.get(sz).add(s);
+			n--;
+		}
+		return m;
+	}
+	
+	static Map<String,String> reverse(Map<String,String>s)
+	{
+		Map<String,String> mp=new HashMap<>();
+		Iterator<Map.Entry<String, String>> it=s.entrySet().iterator();
+		while(it.hasNext())
+		{
+			Map.Entry<String, String>e=it.next();
+			String key=e.getKey();
+			String val=e.getValue();
+			mp.put(val, key);
+		}
+		return mp;
+	}
+	
+	static Map<String,Integer> find_word_frequency(List<String>l)
+	{
+		Map<String,Integer>m=new HashMap<>();
+		for(int i=0; i<l.size(); i++)
+		{
+			String s=l.get(i);
+			m.put(s, (m.get(s)==null?0:m.get(s))+1);
+		}
+		return m;
+	}
+
+}

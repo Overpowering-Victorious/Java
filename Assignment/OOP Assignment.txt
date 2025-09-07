@@ -1,0 +1,326 @@
+package day4;
+
+
+class Shape
+{
+	double area;
+	
+	double calculate_area()
+	{
+		return area;
+	}
+}
+
+class Circle extends Shape
+{
+	final double pi=3.14;
+	int radius;
+	
+	Circle(int r)
+	{
+		radius=r;
+	}
+	
+	void setRadius(int r)
+	{
+		radius=r;
+	}
+	
+	@Override
+	double calculate_area()
+	{
+		return area=(pi*radius*radius);
+	}
+}
+
+class Rectangle extends Shape
+{
+	int length,width;
+	
+	Rectangle(int l, int w)
+	{
+		length=l;
+		width=w;
+	}
+	
+	void setLength(int l)
+	{
+		length=l;
+	}
+	void setWidth(int w)
+	{
+		width=w;
+	}
+	
+	@Override
+	double calculate_area()
+	{
+		return area=length*width;
+	}
+}
+
+class Triangle extends Shape
+{
+	int base,height;
+	
+	Triangle(int b, int h)
+	{
+		base=b;
+		height=h;
+	}
+	
+	void setBase(int b)
+	{
+		base=b;
+	}
+	void setHeight(int h)
+	{
+		height=h;
+	}
+	
+	@Override
+	double calculate_area()
+	{
+		return area=0.5*base*height;
+	}
+}
+
+
+
+
+
+class Animal
+{
+	String type;
+	
+	void makeSound()
+	{
+		System.out.println("Some sound");
+	}
+}
+
+class Dog extends Animal
+{
+	@Override
+	void makeSound()
+	{
+		System.out.println("Bark");
+	}
+}
+
+class Cat extends Animal
+{
+	@Override
+	void makeSound()
+	{
+		System.out.println("Meow");
+	}
+}
+
+
+
+
+
+class Sport
+{
+	String game;
+	
+	void play()
+	{
+		System.out.println("Playing a game");
+	}
+}
+
+class Football extends Sport
+{
+	void play()
+	{
+		System.out.println("Playing Football");
+	}
+}
+
+class Basketball extends Sport
+{
+	void play()
+	{
+		System.out.println("Playing Basketball");
+	}
+}
+
+class Tennis extends Sport
+{
+	void play()
+	{
+		System.out.println("Playing Tennis");
+	}
+}
+
+
+
+
+
+abstract class Vehicle
+{
+	abstract void startEngine();
+	abstract void stopEngine();
+}
+
+class Car extends Vehicle
+{
+	void startEngine()
+	{
+		System.out.println("Car engine started");
+	}
+	void stopEngine()
+	{
+		System.out.println("Car engine stopped");
+	}
+}
+
+class MoterCycle extends Vehicle
+{
+	void startEngine()
+	{
+		System.out.println("MoterCycle engine started");
+	}
+	void stopEngine()
+	{
+		System.out.println("MoterCycle engine stopped");
+	}
+}
+
+
+
+
+
+class BankAccount
+{
+	String accNo;
+	Long balance=0L;
+	
+	BankAccount(){}
+	
+	BankAccount(String n){accNo=n;}
+	
+	void setAccNo(String n){accNo=n;}
+	
+	public void deposite(int amount)
+	{
+		balance+=amount;
+	}
+	
+	public void withdraw(int amount)
+	{
+		if(amount>balance)
+		{
+			System.out.println("Low balance");
+			return;
+		}
+		balance-=amount;
+	}
+	
+	public void display()
+	{
+		System.out.println("[Account No.: "+accNo+", Balance: "+balance+"]");
+	}
+}
+
+
+
+class Person
+{
+	static int count=0;
+	String name;
+	int age;
+	
+	static void display_count()
+	{
+		System.out.println("Number of 'Person' objects created: "+count);
+	}
+	
+	Person(int age, String name)
+	{
+		count++;
+		this.age=age;
+		this.name=name;
+	}
+	
+	public String toString()
+	{
+		return "[Name: "+name+", Age: "+Integer.toString(age)+"]";
+	}
+}
+
+
+
+public class OOPsDemo {
+	
+	public static void main(String[] arg)
+	{
+		Shape t=new Triangle(5,6);
+		System.out.println(t.calculate_area());
+		
+		Shape r=new Rectangle(5,6);
+		System.out.println(r.calculate_area());
+		
+		Shape c=new Circle(2);
+		System.out.println(c.calculate_area());
+		System.out.println();
+		
+		
+		Animal animal=new Animal();
+		animal.makeSound();
+		
+		Animal dog=new Dog();
+		dog.makeSound();
+		
+		Animal cat=new Cat();
+		cat.makeSound();
+		System.out.println();
+		
+		
+		Sport sp=new Sport();
+		sp.play();
+		
+		Sport fb=new Football();
+		fb.play();
+		
+		Sport bb=new Basketball();
+		bb.play();
+		
+		Sport ten=new Tennis();
+		ten.play();
+		System.out.println();
+		
+		
+		
+		Vehicle car=new Car();
+		car.startEngine();
+		car.stopEngine();
+		
+		Vehicle mc=new MoterCycle();
+		mc.startEngine();
+		mc.stopEngine();
+		System.out.println();
+		
+		
+		BankAccount acc=new BankAccount("4646465465");
+		acc.display();
+		acc.setAccNo("1254789453");
+		acc.display();
+		acc.deposite(1000);
+		acc.display();
+		acc.withdraw(200);
+		acc.display();
+		System.out.println();
+		
+		Person.display_count();
+		Person p1=new Person(5,"Alice");
+		Person.display_count();
+		Person p2=new Person(10,"Bob");
+		Person.display_count();
+		Person p3=new Person(15,"Alex");
+		Person.display_count();
+		System.out.println(p1.toString()+" "+p2.toString()+" "+p3.toString());
+	}
+}

@@ -1,0 +1,149 @@
+1) Reverse Integer
+class Solution {
+    public int reverse(int x) {
+        String s=Integer.toString(x),tmp="";
+        int p=1,n=s.length();
+        if(s.charAt(0)=='-') p=-1;
+        for(int i=n-1; i>=0; i--)
+        {
+            char c=s.charAt(i);
+            if(c=='-') break;
+            tmp+=c;
+        }
+        long res=p*(Long.parseLong(tmp));
+        if(res>Integer.MAX_VALUE || res<Integer.MIN_VALUE) return 0;
+        return (int)res;
+    }
+}
+
+
+
+2) Longest Substring Without Repeating Characters
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        int n=s.length(),i=0,j=0,ans=0;
+        Map<Character,Integer>m=new HashMap<>();
+        while(j<n)
+        {
+            char c=s.charAt(j);
+            m.put(c,m.getOrDefault(c,0)+1);
+            while(m.get(c)>1)
+            {
+                char ch=s.charAt(i);
+                m.put(ch,m.get(ch)-1);
+                i++;
+            }
+            ans=Math.max(ans,j-i+1);
+            j++;
+        }
+        return ans;
+    }
+}
+
+
+
+3) Longest Palindromic Substring
+class Solution {
+
+    public int n,l,r;
+    public int[][] t=new int[1001][1001];
+
+    public String longestPalindrome(String s) {
+        n=s.length();
+        l=0;
+        r=0;
+        for(int i=0; i<n; i++)
+        {
+            for(int j=0; j<n; j++)
+            {
+                if(i==j) t[i][j]=1;
+                else t[i][j]=-1;
+            }
+        }
+        int x=solve(0,n-1,s);
+        for(int i=0; i<n; i++)
+        {
+            for(int j=0; j<n; j++)
+            {
+                if(t[i][j]==1 && j-i>r-l)
+                {
+                    r=j;
+                    l=i;
+                }
+            }
+        }
+        return s.substring(l,r+1);
+    }
+
+    int solve(int i, int j, String s)
+    {
+        if(i==j) return 1;
+        if(j-i==1)
+        {
+            if(s.charAt(i)==s.charAt(j)) return t[i][j]=1;
+            return t[i][j]=0;
+        }
+        if(t[i][j]!=-1) return t[i][j];
+        int ans=0,x=0;
+        char a=s.charAt(i),b=s.charAt(j);
+        x=solve(i+1,j,s);
+        x=solve(i,j-1,s);
+        x=solve(i+1,j-1,s);
+        if(a==b && x==1) ans=1;
+        return t[i][j]=ans;
+    }
+}
+
+
+
+4) Two Sum
+class Solution {
+    public int[] twoSum(int[] v, int tg) {
+        int n=v.length;
+        Map<Integer,Integer>m=new HashMap<>();
+        for(int i=0; i<n; i++)
+        {
+            if(m.containsKey(tg-v[i]))
+                return new int[]{m.get(tg-v[i]),i};
+            m.put(v[i],i);
+        }
+        return new int[]{};
+    }
+}
+
+
+
+5) Median of Two Sorted Arrays
+class Solution {
+    public double findMedianSortedArrays(int[] v1, int[] v2) {
+        int n1=v1.length,n2=v2.length;
+        int i=n1-1,j=0;
+        while(i>=0 && j<n2)
+        {
+            if(v1[i]>v2[j])
+            {
+                int x=v1[i];
+                v1[i]=v2[j];
+                v2[j]=x;
+            }
+            i--;
+            j++;
+        }
+
+        Arrays.sort(v1);
+        Arrays.sort(v2);
+
+        if(((n1+n2)&1)==1)
+            return ((n1+n2)/2<n1?v1[(n1+n2)/2]:v2[(n1+n2)/2 -n1]);
+        else
+        {
+            int x=(n1+n2)/2;
+            if(x<n1)
+                return 1.0*(v1[x]+v1[x-1])/2;
+            else if(x==n1)
+                return 1.0*(v1[x-1]+v2[0])/2;
+            else
+                return 1.0*(v2[x-n1]+v2[x-n1-1])/2;
+        }
+    }
+}

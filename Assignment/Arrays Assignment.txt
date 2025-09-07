@@ -1,0 +1,215 @@
+package Day2;
+
+import java.util.Arrays;
+
+public class ArrayDemo {
+	public static void main(String arg[])
+	{
+		int[] a= {5,10,3,8,6,6,3,15,18,5,25};
+		
+		System.out.println("Minimum Element -> "+smallest_element(a));
+		System.out.println("Even Element -> "+Arrays.toString(even_elements(a)));
+		System.out.println("Sum of all Element -> "+array_sum(a));
+		System.out.println("Sorted Array -> "+Arrays.toString(sort_array(a)));
+		System.out.println("Sorted Array wothout bubble sort -> "+Arrays.toString(merge_sort(a,0,a.length-1)));
+		System.out.println("Distinct elements in the array -> "+ Arrays.toString(distinct_elements(a)));
+		System.out.println("Flatten array -> "+ Arrays.toString(flatten_array()));
+	}
+	
+	static int smallest_element(int[] a)
+	{
+		int n=a.length,mn=(int)1e9;
+		for(int i=0; i<n; i++)
+		{
+			if(mn>a[i])
+				mn=a[i];
+		}
+		return mn;
+	}
+	
+	static int[] even_elements(int[] a)
+	{
+		int n=a.length,m=0;
+		for(int i=0; i<n; i++)
+		{
+			if(a[i]%2==0) m++;
+		}
+		int ans[]=new int[m],j=0;
+		for(int i=0; i<n; i++)
+		{
+			if(a[i]%2==0)
+				ans[j++]=a[i];
+		}
+		return ans;
+	}
+	
+	static int array_sum(int[] a)
+	{
+		int n=a.length,s=0;
+		for(int i=0; i<n; i++)
+		{
+			s+=a[i];
+		}
+		return s;
+	}
+	
+	static int[] sort_array(int[] a)
+	{
+		int n=a.length;
+		for(int i=0; i<n; i++)
+		{
+			for(int j=n-1; j>i; j--)
+			{
+				if(a[i]>a[j])
+				{
+					a[i]=a[i]^a[j];
+					a[j]=a[i]^a[j];
+					a[i]=a[i]^a[j];					
+				}
+			}
+		}
+		return a;
+	}
+	
+	static int[] merge_sort(int[] a, int i, int j)
+	{
+		if(i==j) return new int[] {a[i]};
+		int mid=(i+j)/2;
+		int[] l=merge_sort(a,i,mid);
+		int[] r=merge_sort(a,mid+1,j);
+		int[] v=new int[j-i+1];
+		int x=0,y=0,z=0;
+		while(z<=(j-i))
+		{
+			if(x<l.length && y<r.length)
+			{
+				if(l[x]<r[y])
+					v[z]=l[x++];
+				else
+					v[z]=r[y++];
+			}
+			else if(x<l.length)
+				v[z]=l[x++];
+			else
+				v[z]=r[y++];
+			z++;
+		}
+		return v;
+	}
+	
+	static int[] distinct_elements(int[] a)
+	{
+		//assuming elements are between 0 to 1e6
+		int c[]=new int[(int)1e6], n=a.length,m=0;
+		for(int i=0; i<n; i++)
+		{
+			if(c[a[i]]==0)
+			{
+				c[a[i]]=1;
+				m++;
+			}
+		}
+		int ans[]=new int[m],j=0;
+		for(int i=0; i<n; i++)
+		{
+			if(c[a[i]]==1)
+			{
+				ans[j]=a[i];
+				c[a[i]]=0;
+				j++;
+			}
+		}
+		return ans;
+	}
+	
+	static int[] flatten_array()
+	{
+		Object[] jagged_array=new Object[3];
+		jagged_array[0]=new int[] {10,20};
+		jagged_array[1]=new int[] {30};
+		Object[] tmp=new Object[3];
+		tmp[0]=40;
+		tmp[1]=new int[] {50,60};
+		tmp[2]=70;
+		jagged_array[2]=tmp;
+		int c=0;
+		for(int i=0; i<3; i++)
+		{
+			if(jagged_array[i] instanceof Object[])
+			{
+				tmp=(Object[])jagged_array[i];
+				for(int j=0; j<tmp.length; j++)
+				{
+					if(tmp[j] instanceof int[])
+					{
+						int[] tmp1=(int[])tmp[j];
+						for(int k=0; k<tmp1.length; k++)
+						{
+							c++;
+//							System.out.print(1+" ");
+						}
+					}
+					else
+					{
+						c++;
+//						System.out.print(2+" ");
+					}
+				}
+			}
+			else if(jagged_array[i] instanceof int[])
+			{
+				int[] tmp1=(int[])jagged_array[i];
+				for(int k=0; k<tmp1.length; k++)
+				{
+					c++;
+//					System.out.print(3+" ");
+				}
+			}
+			else
+			{
+				c++;
+//				System.out.print(4+" ");
+			}
+		}
+//		System.out.println(c);
+		int ans[]=new int[c],l=0;
+		for(int i=0; i<3; i++)
+		{
+			if(jagged_array[i] instanceof Object[])
+			{
+				tmp=(Object[])jagged_array[i];
+				for(int j=0; j<tmp.length; j++)
+				{
+					if(tmp[j] instanceof int[])
+					{
+						int[] tmp1=(int[])tmp[j];
+						for(int k=0; k<tmp1.length; k++)
+						{
+							ans[l++]=tmp1[k];
+						}
+					}
+					else if(tmp[j] instanceof Integer)
+					{
+						Integer x=(Integer)tmp[j];
+						ans[l++]=x.intValue();
+					}
+				}
+			}
+			else if(jagged_array[i] instanceof int[])
+			{
+				int[] tmp1=(int[])jagged_array[i];
+				for(int k=0; k<tmp1.length; k++)
+				{
+					ans[l++]=tmp1[k];
+				}
+			}
+			else if(jagged_array[i] instanceof Integer)
+			{
+				Integer x=(Integer)jagged_array[i];
+				ans[l++]=x.intValue();
+			}
+		}
+		return ans;
+	}
+	
+}

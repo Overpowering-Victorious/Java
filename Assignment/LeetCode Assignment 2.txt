@@ -1,0 +1,314 @@
+- Longest Common Prefix
+class Solution {
+    public String longestCommonPrefix(String[] s) {
+        int n=s.length,m=(int)1e9,i=0;
+        for(i=0; i<n; i++)
+        {
+            m=Math.min(m,s[i].length());
+        }
+        i=0;
+        while(i<m)
+        {
+            boolean p=true;
+            for(int j=1; j<n; j++)
+            {
+                char a=s[j].charAt(i),b=s[j-1].charAt(i);
+                if(a!=b)
+                {
+                    p=false;
+                    break;
+                }
+            }
+            if(p==false)
+                break;
+            i++;
+        }
+        String ans="";
+        for(int j=0; j<i; j++)
+        {
+            ans+=s[0].charAt(j);
+        }
+        return ans;
+    }
+}
+
+
+- First Unique Character in a String
+class Solution {
+    public int firstUniqChar(String s) {
+        int n=s.length(), a[]=new int[26];
+        for(int i=0; i<n; i++)
+        {
+            char ch=s.charAt(i);
+            a[ch-'a']++;
+        }
+        for(int i=0; i<n; i++)
+        {
+            char ch=s.charAt(i);
+            if(a[ch-'a']==1)
+                return i;
+        }
+        return -1;
+    }
+}
+
+
+- Sort Array by Increasing Frequency
+
+class Cmp implements Comparator<Integer>{
+    Map<Integer,Integer> m;
+    Cmp(Map<Integer,Integer>m)
+    {
+        this.m=m;
+    }
+
+    @Override
+    public int compare(Integer a, Integer b)
+    {
+        int fa=m.get(a),fb=m.get(b);
+        if(fa!=fb)
+            return Integer.compare(fa,fb);
+        return Integer.compare(b,a);
+    }
+}
+
+class Solution {
+    public int[] frequencySort(int[] v) {
+        int n=v.length;
+        Map<Integer,Integer>m=new HashMap<>();
+        for(int i=0; i<n; i++)
+        {
+            m.put(v[i],m.getOrDefault(v[i],0)+1);
+        }
+        Cmp cmp=new Cmp(m);
+        Map<Integer,Integer>mp=new TreeMap<>(cmp);
+        mp.putAll(m);
+        int ans[]=new int[n],i=0;
+        for(Map.Entry<Integer,Integer>e : mp.entrySet())
+        {
+            int x=e.getValue();
+            while(x>0)
+            {
+                ans[i]=e.getKey();
+                i++;
+                x--;
+            }
+        }
+        return ans;
+    }
+}
+
+
+- Relative Sort Array
+class Solution {
+    public int[] relativeSortArray(int[] v1, int[] v2) {
+        int n=v1.length,m=v2.length;
+        Map<Integer,Integer>mp=new TreeMap<>();
+        for(int i=0; i<n; i++)
+        {
+            mp.put(v1[i],mp.getOrDefault(v1[i],0)+1);
+        }
+        int ans[]=new int[n],j=0;
+        for(int i=0; i<m; i++)
+        {
+            int x=mp.get(v2[i]);
+            while(x>0)
+            {
+                ans[j]=v2[i];
+                j++;
+                x--;
+            }
+            mp.remove(v2[i]);
+        }
+        for(Map.Entry<Integer,Integer>e: mp.entrySet())
+        {
+            int x=e.getKey(),y=e.getValue();
+            while(y>0)
+            {
+                ans[j]=x;
+                j++;
+                y--;
+            }
+        }
+        return ans;
+    }
+}
+
+
+- Sort Array By Parity
+class Solution {
+    public int[] sortArrayByParity(int[] v) {
+        int n=v.length;
+        List<Integer>ev=new ArrayList<>();
+        List<Integer>od=new ArrayList<>();
+        for(int i=0; i<n; i++)
+        {
+            if(v[i]%2==0)
+                ev.add(v[i]);
+            else
+                od.add(v[i]);
+        }
+        Collections.sort(ev);
+        Collections.sort(od);
+        int ans[]=new int[ev.size()+od.size()],j=0;
+        for(Integer e: ev)
+        {
+            ans[j++]=e;
+        }
+        for(Integer e: od)
+        {
+            ans[j++]=e;
+        }
+        return ans;
+    }
+}
+
+
+- Regular Expression Matching
+class Solution {
+
+    int t[][]=new int[21][21];
+    int n,m;
+
+    public boolean isMatch(String S, String P) {
+        for(int[] r: t) Arrays.fill(r,-1);
+        n=S.length();
+        m=P.length();
+        char s[]=S.toCharArray();
+        char p[]=P.toCharArray();
+        int x=solve(n-1,m-1,s,p);
+        if(x==1)
+            return true;
+        return false;
+    }
+
+    int solve(int i, int j, char[] s, char[] p)
+    {
+        if(i<0 && j<0)
+            return 1;
+        if(i<0)
+        {
+            while(j>=0 && p[j]=='*')
+                j-=2;
+            if(j<0)
+                return 1;
+            return 0;
+        }
+        if(j<0)
+            return 0;
+        
+        if(t[i][j]!=-1)
+            return t[i][j];
+        int ans=0;
+        if(p[j]=='.')
+            ans|=solve(i-1,j-1,s,p);
+        else if(p[j]=='*')
+        {
+            if((s[i]==p[j-1]) || p[j-1]=='.')
+            {
+                ans|=solve(i-1,j-1,s,p);
+                ans|=solve(i-1,j,s,p);
+            }
+            ans|=solve(i,j-1,s,p);
+            ans|=solve(i,j-2,s,p);
+        }
+        else
+        {
+            if(s[i]==p[j])
+                ans|=solve(i-1,j-1,s,p);
+        }
+        return t[i][j]=ans;
+    }
+}
+
+
+- Integer to Roman
+class Solution {
+
+    String roman(int x, char a, char b, char c)
+    {
+        String rom="";
+        if(x==9)
+        {
+            rom+=c;
+            rom+=a;
+        }
+        else if(x==4)
+        {
+            rom+=c;
+            rom+=b;
+        }
+        else
+        {
+            if(x>=5)
+            {
+                rom+=b;
+                x-=5;
+            }
+            while(x>0)
+            {
+                rom+=c;
+                x--;
+            }
+        }
+        return rom;
+    }
+    
+    public String intToRoman(int num) {
+        String ans="";
+        if(num/1000>0)
+        {
+            int x=num/1000;
+            while(x>0)
+            {
+                ans+='M';
+                x--;
+            }
+        }
+        if((num/100)%10>0)
+        {
+            int x=(num/100)%10;
+            ans+=roman(x,'M','D','C');
+        }
+        if((num/10)%10>0)
+        {
+            int x=(num/10)%10;
+            ans+=roman(x,'C','L','X');
+        }
+        if(num%10>0)
+        {
+            int x=num%10;
+            ans+=roman(x,'X','V','I');
+        }
+        return ans;
+    }
+}
+
+
+- Roman to Integer
+class Solution {
+    public int romanToInt(String s) {
+
+        Map<Character, Integer> m = new HashMap<>();
+        m.put('I', 1);
+        m.put('V', 5);
+        m.put('X', 10);
+        m.put('L', 50);
+        m.put('C', 100);
+        m.put('D', 500);
+        m.put('M', 1000);
+        
+        int ans = 0,n=s.length();
+        
+        for (int i=0; i<n; i++)
+        {
+            char c=s.charAt(i);
+            if (i<n-1 && m.get(c)<m.get(s.charAt(i + 1))) {
+                ans -= m.get(c);
+            } else {
+                ans += m.get(c);
+            }
+        }
+        return ans;
+    }
+}

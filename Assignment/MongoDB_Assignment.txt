@@ -1,0 +1,283 @@
+my_db> db.users.insertMany([
+... {name:'Alice',age:25,email:'alice@example.com',status:'active'},
+... {name:'Bob',age:30,email:'bob@example.com',status:'inactive'},
+... {name:'Charlie',age:22,email:'charlie@example.com'},
+... {name:'David',age:35,email:'david@example.com',status:'active'}]);
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('68a6fda84ade1a6a01eec4a9'),
+    '1': ObjectId('68a6fda84ade1a6a01eec4aa'),
+    '2': ObjectId('68a6fda84ade1a6a01eec4ab'),
+    '3': ObjectId('68a6fda84ade1a6a01eec4ac')
+  }
+}
+
+1) my_db> db.users.find({age:{$gt:25}})
+[
+  {
+    _id: ObjectId('68a6fda84ade1a6a01eec4aa'),
+    name: 'Bob',
+    age: 30,
+    email: 'bob@example.com',
+    status: 'inactive'
+  },
+  {
+    _id: ObjectId('68a6fda84ade1a6a01eec4ac'),
+    name: 'David',
+    age: 35,
+    email: 'david@example.com',
+    status: 'active'
+  }
+]
+
+2) my_db> db.users.find({status:{$exists:true}})
+[
+  {
+    _id: ObjectId('68a6fda84ade1a6a01eec4a9'),
+    name: 'Alice',
+    age: 25,
+    email: 'alice@example.com',
+    status: 'active'
+  },
+  {
+    _id: ObjectId('68a6fda84ade1a6a01eec4aa'),
+    name: 'Bob',
+    age: 30,
+    email: 'bob@example.com',
+    status: 'inactive'
+  },
+  {
+    _id: ObjectId('68a6fda84ade1a6a01eec4ac'),
+    name: 'David',
+    age: 35,
+    email: 'david@example.com',
+    status: 'active'
+  }
+]
+
+3) my_db> db.users.updateOne({name:'Bob'},{$set:{status:'active'}})
+
+4) my_db> db.users.updateOne({name:'Alice'},{$inc:{age:1}})
+
+
+
+my_db> db.products.insertMany([
+... {name:'Laptop', price:1200.00, tags:['electronics','computer']},
+... {name:'Phone', price:800.00, tags:['electronics','mobile']},
+... {name:'Shoes', price:150.00, tags:['fashion','clothing']},
+... {name:'Watch', price:300.00, tags:['fashion','accessory']}])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('68a701184ade1a6a01eec4ad'),
+    '1': ObjectId('68a701184ade1a6a01eec4ae'),
+    '2': ObjectId('68a701184ade1a6a01eec4af'),
+    '3': ObjectId('68a701184ade1a6a01eec4b0')
+  }
+}
+
+5) my_db> db.products.find({price:{$lte:500}})
+[
+  {
+    _id: ObjectId('68a701184ade1a6a01eec4af'),
+    name: 'Shoes',
+    price: 150,
+    tags: [ 'fashion', 'clothing' ]
+  },
+  {
+    _id: ObjectId('68a701184ade1a6a01eec4b0'),
+    name: 'Watch',
+    price: 300,
+    tags: [ 'fashion', 'accessory' ]
+  }
+]
+
+6) my_db> db.products.find({tags:{$in:['electronics']}})
+[
+  {
+    _id: ObjectId('68a701184ade1a6a01eec4ad'),
+    name: 'Laptop',
+    price: 1200,
+    tags: [ 'electronics', 'computer' ]
+  },
+  {
+    _id: ObjectId('68a701184ade1a6a01eec4ae'),
+    name: 'Phone',
+    price: 800,
+    tags: [ 'electronics', 'mobile' ]
+  }
+]
+
+7) my_db> db.products.updateMany({},{$set:{stock:100.00}})
+
+8) my_db> db.products.updateMany({},{$rename:{'price':'cost'}})
+
+
+
+my_db> db.orders.insertMany([
+... {orderId:1, total:500.00, items:3, date:'2025-08-01'},
+... {orderId:2, total:1200, items:6, date:'2025-08-10'},
+... {orderId:3, total:750, items:4, date:'2025-08-15'}])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('68a704174ade1a6a01eec4b1'),
+    '1': ObjectId('68a704174ade1a6a01eec4b2'),
+    '2': ObjectId('68a704174ade1a6a01eec4b3')
+  }
+}
+
+9) my_db> db.orders.find({total:{$ne:750}})
+[
+  {
+    _id: ObjectId('68a704174ade1a6a01eec4b1'),
+    orderId: 1,
+    total: 500,
+    items: 3,
+    date: '2025-08-01'
+  },
+  {
+    _id: ObjectId('68a704174ade1a6a01eec4b2'),
+    orderId: 2,
+    total: 1200,
+    items: 6,
+    date: '2025-08-10'
+  }
+]
+
+10) my_db> db.orders.updateMany({},{$unset:{items:null}})
+
+11) my_db> db.orders.updateMany({},{$mul:{total:1.1}})
+
+12) my_db> db.orders.find({date:{$gt:'2025-08-05'}})
+[
+  {
+    _id: ObjectId('68a704174ade1a6a01eec4b2'),
+    orderId: 2,
+    total: 1320,
+    date: '2025-08-10'
+  },
+  {
+    _id: ObjectId('68a704174ade1a6a01eec4b3'),
+    orderId: 3,
+    total: 825.0000000000001,
+    date: '2025-08-15'
+  }
+]
+
+
+
+my_db> db.students.insertMany([
+... {name:'Eve', grades:[85,90,78]},
+... {name:'Frank', grades:[60,75,80]},
+... {name:'Grace', grades:[95,100,98]}])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('68a706f44ade1a6a01eec4b4'),
+    '1': ObjectId('68a706f44ade1a6a01eec4b5'),
+    '2': ObjectId('68a706f44ade1a6a01eec4b6')
+  }
+}
+
+13) my_db> db.students.find({grades:{$in:[100]}})
+[
+  {
+    _id: ObjectId('68a706f44ade1a6a01eec4b6'),
+    name: 'Grace',
+    grades: [ 95, 100, 98 ]
+  }
+]
+
+14) my_db> db.students.updateOne({name:'Eve'},{$addToSet:{grades:88}})
+
+15) my_db> db.students.updateOne({name:'Frank'},{$pop:{grades:1}})
+
+16) my_db> db.students.find({grades:{$elemMatch:{$gt:90}}})
+[
+  {
+    _id: ObjectId('68a706f44ade1a6a01eec4b6'),
+    name: 'Grace',
+    grades: [ 95, 100, 98 ]
+  }
+]
+
+
+
+my_db> db.employees.insertMany([
+... {name:'Henry', salary: 50000.00, department:'HR'},
+... {name:'Irene', salary: 60000.00, department:'IT'},
+... {name:'Jack', salary: 55000.00, department:'IT'},
+... {name:'Karen', salary: 70000.00, department:'Sales'}])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('68a70ca04ade1a6a01eec4b7'),
+    '1': ObjectId('68a70ca04ade1a6a01eec4b8'),
+    '2': ObjectId('68a70ca04ade1a6a01eec4b9'),
+    '3': ObjectId('68a70ca04ade1a6a01eec4ba')
+  }
+}
+
+17) my_db> db.employees.aggregate({$group:{_id:'$department', totalSalary:{$sum:'$salary'}}})
+[
+  { _id: 'HR', totalSalary: 50000 },
+  { _id: 'IT', totalSalary: 115000 },
+  { _id: 'Sales', totalSalary: 70000 }
+]
+
+18) my_db> db.employees.aggregate({$group:{_id:null, avg_salary:{$avg:'$salary'}}})
+[ { _id: null, avg_salary: 58750 } ]
+
+19) my_db> db.employees.aggregate({$project:{name:1,salary:1}})
+[
+  {
+    _id: ObjectId('68a70ca04ade1a6a01eec4b7'),
+    name: 'Henry',
+    salary: 50000
+  },
+  {
+    _id: ObjectId('68a70ca04ade1a6a01eec4b8'),
+    name: 'Irene',
+    salary: 60000
+  },
+  {
+    _id: ObjectId('68a70ca04ade1a6a01eec4b9'),
+    name: 'Jack',
+    salary: 55000
+  },
+  {
+    _id: ObjectId('68a70ca04ade1a6a01eec4ba'),
+    name: 'Karen',
+    salary: 70000
+  }
+]
+
+20) my_db> db.employees.aggregate({$sort:{salary:-1}})
+[
+  {
+    _id: ObjectId('68a70ca04ade1a6a01eec4ba'),
+    name: 'Karen',
+    salary: 70000,
+    department: 'Sales'
+  },
+  {
+    _id: ObjectId('68a70ca04ade1a6a01eec4b8'),
+    name: 'Irene',
+    salary: 60000,
+    department: 'IT'
+  },
+  {
+    _id: ObjectId('68a70ca04ade1a6a01eec4b9'),
+    name: 'Jack',
+    salary: 55000,
+    department: 'IT'
+  },
+  {
+    _id: ObjectId('68a70ca04ade1a6a01eec4b7'),
+    name: 'Henry',
+    salary: 50000,
+    department: 'HR'
+  }
+]

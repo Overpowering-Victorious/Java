@@ -1,0 +1,122 @@
+package Day2;
+
+public class StringDemo {
+	
+	
+	public static void main(String[] args)
+	{
+		String s="Hello World!";
+		int k=3;
+		System.out.println("Reverse String -> "+ reverse_string(s));
+		System.out.println("Vovel & Consonent count -> "+ count_vovel_consonent(s));
+		System.out.println("Anagrams -> "+ Boolean.toString(anagram_check("silent","listen")));
+		System.out.println("Remove duplicates -> "+ remove_duplicate(s));
+		System.out.println("Smallest and Largest substring of size 'k' -> "+ getSmallestAndLargest("welcometojava",k));
+	}
+	
+	static String reverse_string(String s)
+	{
+		String tmp="";
+		int n=s.length();
+		System.out.println(s);
+		for(int i=n-1; i>=0; i--)
+		{
+			tmp+=s.charAt(i);
+		}
+		s=tmp;
+		return s;
+	}
+	
+	static String count_vovel_consonent(String s)
+	{
+		int n=s.length(),v=0,c=0;
+		for(int i=0; i<n; i++)
+		{
+			char ch=s.charAt(i);
+			if(ch=='a' || ch=='e' || ch=='i' || ch=='o' || ch=='u' || ch=='A' || ch=='E' || ch=='I' || ch=='O' || ch=='U')
+				v++;
+			else if((ch>='a' && ch<='z') || (ch>='A' && ch<='Z'))
+				c++;
+		}
+		return (Integer.toString(v)+" "+Integer.toString(c));
+	}
+	
+	static Boolean anagram_check(String s1, String s2)
+	{
+		s1=s1.toLowerCase();
+		s2=s2.toLowerCase();
+		int a[]=new int[26];
+		int n=s1.length(),m=s2.length();
+		for(int i=0; i<n; i++)
+		{
+			char c=s1.charAt(i);
+			a[c-'a']++;
+		}
+		for(int i=0; i<m; i++)
+		{
+			char c=s2.charAt(i);
+			a[c-'a']--;
+		}
+		for(int i=0; i<26; i++)
+		{
+			if(a[i]!=0)
+				return false;
+		}
+		return true;
+	}
+	
+	static String remove_duplicate(String s)
+	{
+		int a[]=new int[26], A[]=new int[26], n=s.length();
+		for(int i=0; i<n; i++)
+		{
+			char c=s.charAt(i);
+			int x=(c-'a'),y=(c-'A');
+			if(x<26 && x>=0)
+				a[x]=1;
+			if(y<26 && y>=0)
+				A[y]=1;
+		}
+		String ans="";
+		for(int i=0; i<n; i++)
+		{
+			char c=s.charAt(i);
+			int x=(c-'a'),y=(c-'A');
+			if(x<26 && x>=0)
+			{
+				if(a[x]==0)
+					continue;
+				a[x]=0;
+			}
+			if(y<26 && y>=0)
+			{
+				if(A[y]==0)
+					continue;
+				A[y]=0;
+			}
+			ans+=c;
+		}
+		return ans;
+	}
+	
+	static String Que5()
+	{
+		String s="welcometojava";
+		int k=3;
+		return getSmallestAndLargest(s,k);
+	}
+	
+	static String getSmallestAndLargest(String s, int k) {
+        String smallest = "";
+        String largest = "";
+        
+        int n=s.length();
+        for(int i=0; i<=n-k; i++)
+        {
+        	String tmp=s.substring(i, i+k);
+        	if(largest.isEmpty() || largest.compareTo(tmp)<0) largest=tmp;
+        	if(smallest.isEmpty() || smallest.compareTo(tmp)>0) smallest=tmp;
+        }
+        return (smallest + " " + largest);
+    }
+}

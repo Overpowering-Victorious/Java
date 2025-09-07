@@ -1,0 +1,144 @@
+package day6;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+class Employee
+{
+	public String name,dept;
+	public int salary=0;
+	
+	public Employee() {}
+	public Employee(String name, String dept)
+	{
+		this.name=name;
+		this.dept=dept;
+	}
+	
+	public Employee(String name, int salary)
+	{
+		this.name = name;
+		this.salary = salary;
+	}
+	
+	public String toString()
+	{
+		return name;
+	}
+}
+
+public class StreamDemo {
+
+	public static void main(String[] args) {
+		
+		//Q1
+		List<String>s=new ArrayList<>();
+		s.add("banana");
+		s.add("apple");
+		s.add("mango");
+		List<String> tmp=s.stream().sorted().toList();
+		System.out.println(tmp.toString());
+		System.out.println();
+		s.clear();
+		
+		//Q2
+		s.add("cat");
+		s.add("tiger");
+		s.add("lion");
+		s.add("crocodile");
+		
+		tmp=s.stream().filter(st -> st.length()>4).toList();
+		System.out.println(tmp.toString());
+		System.out.println();
+		
+		//Q3
+		List<Employee>ep=new ArrayList<>();
+		ep.add(new Employee("John","IT"));
+		ep.add(new Employee("Alice","HR"));
+		ep.add(new Employee("Bob","IT"));
+		Map<String, List<Employee>>x=ep.stream().collect(Collectors.groupingBy(e->e.dept));
+		x.forEach((dept,eps) -> {
+			System.out.println(dept+" = "+eps.toString());
+		});
+		System.out.println();
+		
+		//Q4
+		ep.get(0).salary=50000;
+		ep.get(1).salary=50000;
+		ep.get(2).salary=60000;
+		ep.add(new Employee("Alex",60000));
+		double avg=ep.stream().collect(Collectors.averagingDouble(e -> e.salary));
+		System.out.println(avg);
+		System.out.println();
+		
+		//Q5
+		String st=s.stream().collect(Collectors.joining(", "));
+		System.out.println(st);
+		System.out.println();
+		
+		//Q6
+		Comparator<Employee>cmp=(e1,e2)->Integer.compare(e1.salary,e2.salary);
+		st=ep.stream().collect(Collectors.maxBy(cmp)).toString();
+		System.out.println(st);
+		System.out.println();
+		
+		//Q7
+		Map<String,Integer>y=s.stream().collect(Collectors.toMap(str->str, str->str.length()));
+		System.out.println(y);
+		System.out.println();
+		
+		//Q8
+		tmp=s.stream().map(String::toUpperCase).toList();
+		System.out.println(tmp.toString());
+		System.out.println();
+		
+		//Q9
+		List<Integer>l=new ArrayList<Integer>();
+		l.add(40);
+		l.add(15);
+		l.add(25);
+		l.add(20);
+		l.add(35);
+		l.add(7);
+		List<Integer>ltmp=l.stream().limit(3).toList();
+		System.out.println(ltmp.toString());
+		System.out.println();
+		
+		//Q10
+		int pdt=l.stream().reduce(1,(a,b)->a*b);
+		System.out.println(pdt);
+		System.out.println();
+		
+		//Q11
+		String s1="Java is great. JAVA is powerful.";
+		tmp=Arrays.stream(s1.split("\\W+")).map(String::toLowerCase).toList();
+		System.out.println(tmp.toString());
+		System.out.println();
+		
+		//Q12
+		s.add("tapir");
+		tmp=s.stream().filter(nm -> nm.startsWith("t")).toList();
+		System.out.println(tmp.toString());
+		System.out.println();
+		
+		//Q13
+		st=s.stream().collect(Collectors.maxBy(Comparator.comparingInt(nm->(int)nm.length()))).toString();
+		System.out.println(st);
+		System.out.println();
+		
+		//Q14
+		y= Arrays.stream(s1.split("\\W+")).collect(Collectors.toMap(str->str, str->1, Integer::sum));
+		System.out.println(y);
+		System.out.println();
+		
+		//Q15
+		st=s.stream().map(String::toUpperCase).collect(Collectors.joining(" - "));
+		System.out.println(st);
+		System.out.println();
+	}
+
+}
