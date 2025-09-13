@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+    
+    <bean id="e1" class="com.example.xml_config.bean.Employee">
+    	<constructor-arg name="id" value="11"/>
+    	<constructor-arg name="name" value="Bob"/>
+    </bean>
+    
+    <bean id="e2" class="com.example.xml_config.bean.Employee">
+    	<constructor-arg name="id" value="12"/>
+    	<constructor-arg name="name" value="Sam"/>
+    	<constructor-arg name="contact_no">
+    		<list>
+    			<value>1234567894</value>
+    			<value>1234567895</value>
+    			<value>1234567896</value>
+    		</list>
+    	</constructor-arg>
+    </bean>
+    
+    <bean id="e3" class="com.example.xml_config.bean.Employee">
+    	<constructor-arg name="id" value="13"/>
+    	<constructor-arg name="name" value="Alex"/>
+    	<constructor-arg name="salary" value="80000"/>
+    	<constructor-arg name="contact_no">
+    		<list>
+    			<value>1234567091</value>
+    			<value>1234567092</value>
+    			<value>1234567093</value>
+    		</list>
+    	</constructor-arg>
+    </bean>
+    
+    <bean id="e4" class="com.example.xml_config.bean.Employee">
+    	<constructor-arg name="id" value="14"/>
+    	<constructor-arg name="name" value="Dexter"/>
+    	<constructor-arg name="log" ref="l1"/>
+    	<constructor-arg name="contact_no">
+    		<list>
+    			<value>1234567094</value>
+    			<value>1234567095</value>
+    			<value>1234567096</value>
+    		</list>
+    	</constructor-arg>
+    </bean>
+    
+    <bean id="e5" class="com.example.xml_config.bean.Employee">
+    	<constructor-arg name="id" value="15"/>
+    	<constructor-arg name="salary" value="90000"/>
+    	<constructor-arg name="name" value="James"/>
+    	<constructor-arg name="age" value="22"/>
+    	<constructor-arg name="log" ref="l2"/>
+    	<constructor-arg name="contact_no">
+    		<list>
+    			<value>1234567097</value>
+    			<value>1234567098</value>
+    			<value>1234567099</value>
+    		</list>
+    	</constructor-arg>
+    </bean>
+    
+    <bean id="l1" class="com.example.xml_config.bean.Login">
+    	<property name="email" value="dexter@example.com"/>
+    	<property name="userName" value="Dexter123"/>
+    	<property name="password" value="bcd@1234"/>
+    </bean>
+    
+    <bean id="l2" class="com.example.xml_config.bean.Login">
+    	<property name="email" value="james@example.com"/>
+    	<property name="userName" value="James123"/>
+    	<property name="password" value="cde@1234"/>
+    </bean>
+    
+</beans>  
